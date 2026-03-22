@@ -42,7 +42,7 @@ try:
         manager = None
 
         if use_real_agent_pipeline and api_key:
-            shared_llm = ChatOpenAI(api_key=api_key, model='gpt-3.5-turbo', temperature=0.3)
+            shared_llm = ChatOpenAI(api_key=api_key, model='gpt-4o-mini', temperature=0.3)
             procurement_agent = LLMProcurementAgent(shared_llm, inventory_manager)
             production_agent = LLMProductionAgent(shared_llm, inventory_manager)
             logistics_agent = LLMLogisticsAgent(shared_llm, inventory_manager)
