@@ -13,4 +13,4 @@ app = create_app()
 if __name__ == '__main__':
     logger.info('Starting LangGraph-based Multi-Agent Order Processing System')
     logger.info('Endpoints available at http://localhost:5000/api')
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=False, host='0.0.0.0', port=5000)
