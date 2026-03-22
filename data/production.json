@@ -1,0 +1,8 @@
+{
+  "weekly_capacity": 4000,
+  "standard_lead_time_days": 22,
+  "max_overtime_hours_per_day": 4,
+  "working_days_per_week": 5,
+  "max_planning_weeks": 4,
+  "overtime_cost_per_hour": 45
+}

@@ -1,0 +1,32 @@
+{
+  "origin": "Plant-01",
+  "carrier_networks": {
+    "ground": [
+      {
+        "name": "BulkRoad",
+        "max_units": 12000,
+        "fixed_fee": 200,
+        "supported_locations": ["local", "regional", "national"],
+        "reliability": 0.96
+      }
+    ],
+    "express": [
+      {
+        "name": "RapidFreight",
+        "max_units": 8000,
+        "fixed_fee": 450,
+        "supported_locations": ["regional", "national"],
+        "reliability": 0.93
+      }
+    ],
+    "air": [
+      {
+        "name": "SkyBridge Cargo",
+        "max_units": 3500,
+        "fixed_fee": 1200,
+        "supported_locations": ["national"],
+        "reliability": 0.9
+      }
+    ]
+  }
+}

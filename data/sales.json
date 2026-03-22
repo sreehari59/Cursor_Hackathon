@@ -1,0 +1,18 @@
+{
+  "default_customer": {
+    "tier": "standard",
+    "max_price_uplift": 0.20,
+    "acceptable_delivery_buffer_days": 2,
+    "annual_volume": 25000,
+    "relationship_years": 1
+  },
+  "customers": {
+    "acme corp": {
+      "tier": "strategic",
+      "max_price_uplift": 0.25,
+      "acceptable_delivery_buffer_days": 3,
+      "annual_volume": 120000,
+      "relationship_years": 5
+    }
+  }
+}

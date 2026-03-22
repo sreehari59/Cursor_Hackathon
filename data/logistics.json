@@ -1,0 +1,13 @@
+{
+  "location_profiles": {
+    "local city": { "type": "local", "distance_km": 50 },
+    "regional state": { "type": "regional", "distance_km": 300 },
+    "national": { "type": "national", "distance_km": 1000 }
+  },
+  "shipping_modes": {
+    "ground": { "cost_per_unit": 0.30, "transit_days": 5 },
+    "express": { "cost_per_unit": 0.85, "transit_days": 3 },
+    "air": { "cost_per_unit": 2.10, "transit_days": 1 }
+  },
+  "default_mode": "ground"
+}

@@ -1,0 +1,12 @@
+{
+  "margin_floor": 0.15,
+  "target_margin": 0.22,
+  "rush_surcharge_rate": 0.12,
+  "base_cost_per_unit": 8.5,
+  "volume_discounts": [
+    { "min_qty": 0, "max_qty": 99, "rate": 0.0 },
+    { "min_qty": 100, "max_qty": 999, "rate": 0.01 },
+    { "min_qty": 1000, "max_qty": 4999, "rate": 0.02 },
+    { "min_qty": 5000, "max_qty": 99999999, "rate": 0.03 }
+  ]
+}

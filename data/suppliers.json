@@ -1,0 +1,36 @@
+{
+  "suppliers": {
+    "ChemCorp Asia": {
+      "lead_time_days": 10,
+      "reservation_window_days": 2,
+      "materials": {
+        "MAT-STEEL-A": { "available": 320000, "price_multiplier": 1.03 },
+        "MAT-STEEL-B": { "available": 180000, "price_multiplier": 1.04 },
+        "MAT-ALLOY-X": { "available": 90000, "price_multiplier": 1.05 },
+        "MAT-MOTOR-100": { "available": 9000, "price_multiplier": 1.04 },
+        "MAT-MOTOR-200": { "available": 4500, "price_multiplier": 1.05 },
+        "MAT-MOTOR-300": { "available": 2200, "price_multiplier": 1.06 },
+        "MAT-SEAL-A": { "available": 25000, "price_multiplier": 1.02 },
+        "MAT-SEAL-B": { "available": 18000, "price_multiplier": 1.02 },
+        "MAT-SEAL-CHEM": { "available": 9000, "price_multiplier": 1.03 },
+        "MAT-CONTROL-UNIT": { "available": 4200, "price_multiplier": 1.04 }
+      }
+    },
+    "EuroChem GmbH": {
+      "lead_time_days": 14,
+      "reservation_window_days": 3,
+      "materials": {
+        "MAT-STEEL-A": { "available": 180000, "price_multiplier": 1.06 },
+        "MAT-STEEL-B": { "available": 140000, "price_multiplier": 1.06 },
+        "MAT-ALLOY-X": { "available": 80000, "price_multiplier": 1.07 },
+        "MAT-MOTOR-100": { "available": 5000, "price_multiplier": 1.07 },
+        "MAT-MOTOR-200": { "available": 2600, "price_multiplier": 1.08 },
+        "MAT-MOTOR-300": { "available": 1400, "price_multiplier": 1.09 },
+        "MAT-SEAL-A": { "available": 12000, "price_multiplier": 1.04 },
+        "MAT-SEAL-B": { "available": 9000, "price_multiplier": 1.04 },
+        "MAT-SEAL-CHEM": { "available": 5000, "price_multiplier": 1.05 },
+        "MAT-CONTROL-UNIT": { "available": 2000, "price_multiplier": 1.06 }
+      }
+    }
+  }
+}

@@ -1,0 +1,52 @@
+[
+  {
+    "material_id": "MAT-STEEL-A",
+    "unit_cost": 70,
+    "stock": 22000
+  },
+  {
+    "material_id": "MAT-STEEL-B",
+    "unit_cost": 90,
+    "stock": 15000
+  },
+  {
+    "material_id": "MAT-ALLOY-X",
+    "unit_cost": 120,
+    "stock": 7000
+  },
+  {
+    "material_id": "MAT-MOTOR-100",
+    "unit_cost": 4500,
+    "stock": 180
+  },
+  {
+    "material_id": "MAT-MOTOR-200",
+    "unit_cost": 7000,
+    "stock": 95
+  },
+  {
+    "material_id": "MAT-MOTOR-300",
+    "unit_cost": 11000,
+    "stock": 45
+  },
+  {
+    "material_id": "MAT-SEAL-A",
+    "unit_cost": 500,
+    "stock": 850
+  },
+  {
+    "material_id": "MAT-SEAL-B",
+    "unit_cost": 700,
+    "stock": 480
+  },
+  {
+    "material_id": "MAT-SEAL-CHEM",
+    "unit_cost": 1200,
+    "stock": 210
+  },
+  {
+    "material_id": "MAT-CONTROL-UNIT",
+    "unit_cost": 3500,
+    "stock": 170
+  }
+]

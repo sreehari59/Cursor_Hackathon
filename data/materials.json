@@ -1,0 +1,27 @@
+[
+  {
+    "sku": "PMP-STD-100",
+    "materials": {
+      "MAT-STEEL-A": 50,
+      "MAT-MOTOR-100": 1,
+      "MAT-SEAL-A": 2
+    }
+  },
+  {
+    "sku": "PMP-HEAVY-200",
+    "materials": {
+      "MAT-STEEL-B": 80,
+      "MAT-MOTOR-200": 1,
+      "MAT-SEAL-B": 3
+    }
+  },
+  {
+    "sku": "PMP-CHEM-300",
+    "materials": {
+      "MAT-ALLOY-X": 120,
+      "MAT-MOTOR-300": 1,
+      "MAT-SEAL-CHEM": 4,
+      "MAT-CONTROL-UNIT": 1
+    }
+  }
+]

@@ -1,0 +1,6 @@
+{
+  "primary_supplier": "ChemCorp Asia",
+  "primary_lead_time_days": 10,
+  "alternate_supplier": "EuroChem GmbH",
+  "alternate_lead_time_days": 14
+}
