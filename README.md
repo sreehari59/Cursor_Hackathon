@@ -4,7 +4,7 @@ This backend serves the frontend negotiation UI using Flask and LangGraph-backed
 
 ## Current API Base
 
-`http://localhost:5000/api`
+`http://localhost:8080/api`
 
 ## Active Endpoints
 
@@ -23,13 +23,13 @@ This backend serves the frontend negotiation UI using Flask and LangGraph-backed
 ## Run
 
 ```bash
-cd kai_hackathon_1
+cd cursor_hackathon
 .\venv\Scripts\activate
 pip install -r requirements.txt
 python api_langgraph.py
 ```
 
-Server starts on `http://localhost:5000`.
+Server starts on `http://localhost:8080`.
 
 ## Frontend Integration Notes
 
@@ -40,7 +40,7 @@ Server starts on `http://localhost:5000`.
 ## Project Structure
 
 ```text
-kai_hackathon_1/
+cursor_hackathon/
   api_langgraph.py                # Flask entrypoint
   api_langgraph_app/
     __init__.py                   # App factory and blueprint registration
