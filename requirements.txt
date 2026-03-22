@@ -1,0 +1,13 @@
+flask==2.3.2
+werkzeug==2.3.6
+gunicorn>=21.2.0
+langgraph>=0.2.0
+langchain>=0.3.0
+langchain-openai>=0.2.0
+openai>=1.40.0
+python-dotenv==1.0.0
+pydantic>=2.5.0
+websocket-client>=1.8.0
+Flask
+werkzeug
+vapi-server-sdk
