@@ -11,3 +11,4 @@ websocket-client>=1.8.0
 Flask
 werkzeug
 vapi-server-sdk
+gevent
