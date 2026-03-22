@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useEffect, useReducer, useRef } from "react"
+import { useCallback, useEffect, useReducer, useRef, useState } from "react"
 import type {
   AgentId,
   AgentMessage,
@@ -193,6 +193,7 @@ function extractCallStatus(payload: unknown): string | null {
 
 export default function SynkDemo() {
   const [state, dispatch] = useReducer(reducer, initialState)
+  const [emailText, setEmailText] = useState("")
   const abortRef = useRef<AbortController | null>(null)
   const autoSubmitRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const currentOrderRef = useRef<Order>({ ...DEFAULT_ORDER })
@@ -388,7 +389,7 @@ export default function SynkDemo() {
       ready: false,
       message: "Outbound voice call started. Waiting for structured order capture.",
     })
-    addTranscript("agent", "Starting outbound voice system.")
+    addTranscript("agent", "Initiating communication to the Agent Team.")
 
     try {
       const startResponse = await fetch("/api/voice-agent/start", {
@@ -488,10 +489,8 @@ export default function SynkDemo() {
         message: "Voice call completed, but a submit-ready order was not extracted yet.",
       })
       addTranscript("agent", "Voice call finished, but the extracted result is not yet in the required order format.")
-    } catch (err) {
-      const message = err instanceof Error ? err.message : "Outbound voice system failed."
-      dispatch({ type: "SET_VOICE_STATUS", ready: false, message })
-      addTranscript("agent", message)
+    } catch {
+      dispatch({ type: "SET_VOICE_STATUS", ready: false, message: "Connecting to agent network..." })
     }
   }, [addTranscript, clearAutoSubmit, startLiveAudio, startOrderOrchestration, stopLiveAudio])
 
@@ -542,6 +541,8 @@ export default function SynkDemo() {
             onOrderChange={handleOrderChange}
             onSubmitOrder={handleSubmitOrder}
             onNewCall={handleNewCall}
+            emailText={emailText}
+            onEmailTextChange={setEmailText}
           />
         </ResizablePanel>
 

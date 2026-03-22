@@ -32,11 +32,11 @@ export function SynkHeader({ phase, backendSource, backendMessage }: SynkHeaderP
     <header className="flex items-center justify-between border-b border-border px-6 py-2.5 bg-card">
       <div className="flex items-center gap-3">
         <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center overflow-hidden">
-          <Image src="/agents/orchestrator.jpg" alt="SYNK" width={32} height={32} className="object-cover w-full h-full" />
+          <Image src="/agents/orchestrator.jpg" alt="ForgeAlign" width={32} height={32} className="object-cover w-full h-full" />
         </div>
         <div>
-          <h1 className="text-sm font-bold tracking-wider text-foreground font-mono">SYNK</h1>
-          <p className="text-[9px] text-muted-foreground tracking-[0.15em] uppercase">Multi-Agent Manufacturing Intelligence</p>
+          <h1 className="text-sm font-bold tracking-wider text-foreground font-mono">ForgeAlign</h1>
+          <p className="text-[9px] text-muted-foreground tracking-[0.15em] uppercase">A2A Intelligence</p>
         </div>
       </div>
 

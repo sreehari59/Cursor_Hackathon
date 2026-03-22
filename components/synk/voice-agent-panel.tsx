@@ -1,10 +1,9 @@
 "use client"
 
 import Image from "next/image"
-import { CheckCircle2, Clock, Package, Phone, Plus, XCircle } from "lucide-react"
+import { CheckCircle2, Clock, Mail, Package, Phone, Plus, XCircle } from "lucide-react"
 import type { DemoPhase, Order, ConsensusResult } from "@/lib/synk/types"
 import type { CallLog } from "@/app/page"
-import { VoiceWaveform } from "./voice-waveform"
 import { VoiceTranscript, type TranscriptMessage } from "./voice-transcript"
 import { OrderCard } from "./order-card"
 import { Button } from "@/components/ui/button"
@@ -24,6 +23,8 @@ interface VoiceAgentPanelProps {
   onOrderChange: (order: Order) => void
   onSubmitOrder: () => void
   onNewCall: () => void
+  emailText?: string
+  onEmailTextChange?: (text: string) => void
 }
 
 function formatTime(ts: number) {
@@ -44,6 +45,8 @@ export function VoiceAgentPanel({
   onOrderChange,
   onSubmitOrder,
   onNewCall,
+  emailText = "",
+  onEmailTextChange,
 }: VoiceAgentPanelProps) {
   const isCallActive = phase === "active-call" || phase === "callback"
   const isProcessing = ["order-broadcast", "round-1", "round-2", "round-3", "consensus"].includes(phase)
@@ -61,7 +64,7 @@ export function VoiceAgentPanel({
         ? "Decision callback in progress. Order details remain available for reference."
         : isDone
           ? "Run complete. Final order details are shown below."
-          : "Waiting for outbound voice result.")
+          : "Waiting for email input.")
 
   return (
     <div className="flex flex-col h-full bg-card relative">
@@ -69,7 +72,7 @@ export function VoiceAgentPanel({
         <div className="flex items-center gap-3">
           <Image src="/agents/voice-agent.jpg" alt="Voice Agent" width={32} height={32} className="rounded-full ring-2 ring-primary/20" />
           <div>
-            <span className="text-sm font-semibold text-foreground">SYNK Voice Agent</span>
+            <span className="text-sm font-semibold text-foreground">ForgeAgent</span>
             <span className="block text-[10px] text-muted-foreground">AI-powered order intake</span>
           </div>
         </div>
@@ -101,22 +104,32 @@ export function VoiceAgentPanel({
               <div className="relative">
                 <div className="w-36 h-36 rounded-full bg-gradient-to-br from-indigo-100 via-purple-50 to-blue-100 flex items-center justify-center shadow-xl shadow-indigo-100/50">
                   <div className="w-28 h-28 rounded-full overflow-hidden ring-4 ring-white shadow-inner">
-                    <Image src="/agents/voice-agent.jpg" alt="Voice Agent" width={112} height={112} className="object-cover w-full h-full" />
+                    <Image src="/agents/voice-agent.jpg" alt="ForgeAgent" width={112} height={112} className="object-cover w-full h-full" />
                   </div>
-                </div>
-                <div className="absolute -bottom-2 left-1/2 -translate-x-1/2">
-                  <button
-                    onClick={onAcceptCall}
-                    className="w-12 h-12 rounded-full bg-foreground text-card flex items-center justify-center shadow-lg hover:scale-105 transition-transform cursor-pointer"
-                  >
-                    <Phone className="w-5 h-5" />
-                  </button>
                 </div>
               </div>
               <div className="text-center">
-                <p className="text-base font-semibold text-foreground">Start system</p>
-                <p className="text-sm text-muted-foreground mt-1">Trigger outbound voice capture and prepare the agent-network order</p>
+                <p className="text-base font-semibold text-foreground">Paste Email</p>
+                <p className="text-sm text-muted-foreground mt-1">Drop an email below to capture order details and prepare the agent-network order</p>
               </div>
+            </div>
+
+            <div className="px-5 py-3">
+              <textarea
+                className="w-full h-40 rounded-xl border border-border bg-secondary/30 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 resize-none"
+                placeholder="Paste email content here..."
+                value={emailText}
+                onChange={(e) => onEmailTextChange?.(e.target.value)}
+              />
+              <Button
+                onClick={onAcceptCall}
+                disabled={!emailText.trim()}
+                className="w-full mt-3 rounded-full font-medium"
+                size="sm"
+              >
+                <Mail className="w-3.5 h-3.5 mr-1.5" />
+                Process Email
+              </Button>
             </div>
 
             {callHistory.length > 0 && (
@@ -145,7 +158,6 @@ export function VoiceAgentPanel({
                     {isCallback ? "Calling back" : "System active"} -- {displayCustomer}
                   </span>
                 </div>
-                <VoiceWaveform active={isCallActive || isProcessing} />
               </div>
             )}
 
@@ -196,7 +208,7 @@ export function VoiceAgentPanel({
                       className="w-full mt-3 rounded-full font-medium"
                       size="sm"
                     >
-                      {voiceOrderReady ? "Submit to Agent Network" : "Awaiting Voice Result"}
+                      {voiceOrderReady ? "Submit to Agent Network" : "Processing Request"}
                     </Button>
                   </>
                 )}
@@ -269,18 +281,15 @@ export function VoiceAgentPanel({
           <div className="bg-card rounded-2xl shadow-2xl shadow-black/10 border border-border overflow-hidden">
             <div className="flex items-center gap-3 px-4 py-3 bg-secondary/50">
               <div className="w-10 h-10 rounded-full overflow-hidden ring-2 ring-emerald-200">
-                <Image src="/agents/voice-agent.jpg" alt="Voice Agent" width={40} height={40} className="object-cover w-full h-full" />
+                <Image src="/agents/voice-agent.jpg" alt="ForgeAgent" width={40} height={40} className="object-cover w-full h-full" />
               </div>
               <div>
-                <p className="text-sm font-semibold text-foreground">Calling {order.customer}</p>
+                <p className="text-sm font-semibold text-foreground">Notifying {order.customer}</p>
                 <p className="flex items-center gap-1.5 text-[10px] text-emerald-600 font-medium">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                   Connected
                 </p>
               </div>
-            </div>
-            <div className="px-4 py-3">
-              <VoiceWaveform active />
             </div>
           </div>
         </div>

@@ -7,7 +7,7 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
 const jetbrains = JetBrains_Mono({ subsets: ["latin"], variable: "--font-jetbrains" })
 
 export const metadata: Metadata = {
-  title: 'SYNK - Multi-Agent Manufacturing Intelligence',
+  title: 'ForgeAlign - A2A Intelligence',
   description: 'Real-time multi-agent negotiation system for rush order fulfillment. Watch AI agents collaborate to optimize production, finance, logistics, procurement, and sales decisions.',
 }
 
