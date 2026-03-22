@@ -151,6 +151,99 @@ function delay(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
+const PRODUCT_CATALOG = ["PMP-STD-100", "PMP-HEAVY-200", "PMP-CHEM-300"] as const
+
+function parseOrderFromEmail(emailText: string): Partial<Order> | null {
+  if (!emailText.trim()) return null
+
+  const text = emailText.toLowerCase()
+  const result: Partial<Order> = {}
+  let matched = false
+
+  // Extract product
+  for (const sku of PRODUCT_CATALOG) {
+    if (text.includes(sku.toLowerCase())) {
+      result.product = sku
+      matched = true
+      break
+    }
+  }
+
+  // Extract quantity: look for patterns like "50 units", "quantity: 50", "qty 50", "50 pcs"
+  const qtyPatterns = [
+    /(?:quantity|qty)[:\s]*([\d,]+)/i,
+    /([\d,]+)\s*(?:units?|pcs|pieces)/i,
+    /(?:need|order|request|want)\s+([\d,]+)\s/i,
+  ]
+  for (const pat of qtyPatterns) {
+    const m = emailText.match(pat)
+    if (m) {
+      const qty = parseInt(m[1].replace(/,/g, ""), 10)
+      if (qty > 0 && qty < 1_000_000) {
+        result.quantity = qty
+        matched = true
+        break
+      }
+    }
+  }
+
+  // Extract price: look for "$10.00", "$10", "10.00 per unit", "price: 10"
+  const pricePatterns = [
+    /\$([\d,]+(?:\.\d{1,2})?)/i,
+    /(?:price|cost|rate)[:\s]*\$?([\d,]+(?:\.\d{1,2})?)/i,
+    /([\d,]+(?:\.\d{1,2})?)\s*(?:per unit|\/unit|each)/i,
+  ]
+  for (const pat of pricePatterns) {
+    const m = emailText.match(pat)
+    if (m) {
+      const price = parseFloat(m[1].replace(/,/g, ""))
+      if (price > 0 && price < 100_000) {
+        result.requestedPrice = price
+        matched = true
+        break
+      }
+    }
+  }
+
+  // Extract delivery days: "18 days", "delivery: 18", "within 18 days", "lead time 18 days"
+  const deliveryPatterns = [
+    /(?:deliver(?:y|ed)?|lead\s*time|ship(?:ping)?|within)[:\s]*([\d]+)\s*(?:days?|business days?|d\b)/i,
+    /([\d]+)\s*(?:days?|business days?)\s*(?:delivery|lead|max|maximum|timeline)/i,
+    /([\d]+)[\s-]*day/i,
+  ]
+  for (const pat of deliveryPatterns) {
+    const m = emailText.match(pat)
+    if (m) {
+      const days = parseInt(m[1], 10)
+      if (days > 0 && days < 365) {
+        result.requestedDeliveryDays = days
+        matched = true
+        break
+      }
+    }
+  }
+
+  // Extract customer name from "from" line or signature
+  const customerPatterns = [
+    /(?:from|regards|sincerely|thanks)[,:\s]*([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*(?:\s+(?:Corp|Inc|LLC|Ltd|Co|Company|Industries|Manufacturing))?)/m,
+    /(?:company|organization|firm)[:\s]*([A-Za-z][A-Za-z\s]+(?:Corp|Inc|LLC|Ltd|Co|Company|Industries|Manufacturing))/i,
+  ]
+  for (const pat of customerPatterns) {
+    const m = emailText.match(pat)
+    if (m) {
+      result.customer = m[1].trim()
+      break
+    }
+  }
+
+  // Detect priority
+  if (/\b(?:rush|urgent|asap|immediately|critical)\b/i.test(emailText)) {
+    result.priority = /\bcritical\b/i.test(emailText) ? "critical" : "rush"
+  }
+
+  return matched ? result : null
+}
+
 function normalizeCapturedOrder(rawOrder: Record<string, unknown>): Order {
   const priority = rawOrder.priority === "critical" ? "critical" : rawOrder.priority === "standard" ? "standard" : "rush"
   return {
@@ -387,15 +480,63 @@ export default function SynkDemo() {
     dispatch({
       type: "SET_VOICE_STATUS",
       ready: false,
-      message: "Outbound voice call started. Waiting for structured order capture.",
+      message: "Processing email — extracting order details.",
     })
     addTranscript("agent", "Initiating communication to the Agent Team.")
+
+    // Parse order fields from the pasted email text
+    const parsed = parseOrderFromEmail(emailText)
+    if (parsed) {
+      const extractedOrder: Order = {
+        id: parsed.id || `ORD-EMAIL-${Date.now()}`,
+        customer: parsed.customer || "",
+        product: parsed.product || "",
+        quantity: parsed.quantity || 0,
+        requestedPrice: parsed.requestedPrice || 0,
+        requestedDeliveryDays: parsed.requestedDeliveryDays || 0,
+        priority: parsed.priority || "rush",
+      }
+      currentOrderRef.current = extractedOrder
+      dispatch({ type: "SET_ORDER", order: extractedOrder })
+
+      const filledFields: string[] = []
+      if (parsed.product) filledFields.push(`Product: ${parsed.product}`)
+      if (parsed.quantity) filledFields.push(`Qty: ${parsed.quantity}`)
+      if (parsed.requestedPrice) filledFields.push(`Price: $${parsed.requestedPrice.toFixed(2)}`)
+      if (parsed.requestedDeliveryDays) filledFields.push(`Delivery: ${parsed.requestedDeliveryDays} days`)
+      if (parsed.customer) filledFields.push(`Customer: ${parsed.customer}`)
+
+      addTranscript("agent", `Extracted from email: ${filledFields.join(", ")}.`)
+
+      const allFilled = parsed.product && parsed.quantity && parsed.requestedPrice && parsed.requestedDeliveryDays
+      if (allFilled) {
+        dispatch({
+          type: "SET_VOICE_STATUS",
+          ready: true,
+          message: "All order fields captured from email. Ready to submit.",
+        })
+        addTranscript("agent", "All order fields captured. You can submit to the agent network or edit the fields.")
+      } else {
+        dispatch({
+          type: "SET_VOICE_STATUS",
+          ready: false,
+          message: "Partial extraction — please fill remaining fields manually.",
+        })
+        addTranscript("agent", "Some fields could not be extracted. Please fill in the missing details.")
+      }
+    }
+
+    // If all fields were extracted from email, skip backend polling
+    const allFieldsParsed = parsed?.product && parsed?.quantity && parsed?.requestedPrice && parsed?.requestedDeliveryDays
+    if (allFieldsParsed) {
+      return
+    }
 
     try {
       const startResponse = await fetch("/api/voice-agent/start", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({}),
+        body: JSON.stringify({ emailText }),
       })
       const startPayload = await startResponse.json().catch(() => null)
       if (!startResponse.ok) {
@@ -490,9 +631,12 @@ export default function SynkDemo() {
       })
       addTranscript("agent", "Voice call finished, but the extracted result is not yet in the required order format.")
     } catch {
-      dispatch({ type: "SET_VOICE_STATUS", ready: false, message: "Connecting to agent network..." })
+      // If we already parsed some fields from email, keep them and let user fill the rest
+      if (!parsed) {
+        dispatch({ type: "SET_VOICE_STATUS", ready: false, message: "Connecting to agent network..." })
+      }
     }
-  }, [addTranscript, clearAutoSubmit, startLiveAudio, startOrderOrchestration, stopLiveAudio])
+  }, [emailText, addTranscript, clearAutoSubmit, startLiveAudio, startOrderOrchestration, stopLiveAudio])
 
   const handleSubmitOrder = useCallback(async () => {
     if (!state.voiceOrderReady) {
