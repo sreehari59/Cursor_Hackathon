@@ -356,9 +356,9 @@ export default function SynkDemo() {
             backendSource: event.data.backendSource,
             backendMessage: event.data.backendMessage,
           })
-          if (event.data.backendSource === "frontend-fallback") {
-            addTranscript("agent", event.data.backendMessage || "Backend unavailable. Showing frontend dummy data.")
-          }
+          // if (event.data.backendSource === "frontend-fallback") {
+          //   addTranscript("agent", event.data.backendMessage || "Backend unavailable. Showing frontend dummy data.")
+          // }
         }
         break
 

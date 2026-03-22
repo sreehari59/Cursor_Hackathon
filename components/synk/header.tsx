@@ -41,6 +41,7 @@ export function SynkHeader({ phase, backendSource, backendMessage }: SynkHeaderP
       </div>
 
       <div className="flex items-center gap-3">
+        {/* Backend status indicator commented out temporarily
         <div
           className={`flex items-center gap-2 px-3 py-1 rounded-full border ${
             backendSource === "backend"
@@ -68,6 +69,7 @@ export function SynkHeader({ phase, backendSource, backendMessage }: SynkHeaderP
                 : "Backend Status Unknown"}
           </span>
         </div>
+        */
 
         <div className={`flex items-center gap-2 px-3.5 py-1.5 rounded-full border transition-colors ${
           isNegotiating ? "bg-primary/5 border-primary/20" : phase === "consensus" ? "bg-emerald-50 border-emerald-200" : phase === "done" ? "bg-emerald-50 border-emerald-200" : "bg-secondary border-border"
