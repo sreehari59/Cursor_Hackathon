@@ -286,7 +286,7 @@ function extractCallStatus(payload: unknown): string | null {
 
 export default function SynkDemo() {
   const [state, dispatch] = useReducer(reducer, initialState)
-  const [emailText, setEmailText] = useState("")
+  const [emailText, setEmailText] = useState("Hi,\nthis is Sarach from Acme Corp. We need a rush order\n50 units of PMP-STD-100 at $10.00 per unit with delivery in 18 days")
   const abortRef = useRef<AbortController | null>(null)
   const autoSubmitRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const currentOrderRef = useRef<Order>({ ...DEFAULT_ORDER })
