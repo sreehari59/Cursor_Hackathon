@@ -2,6 +2,8 @@
 
 ForgeAlign is an intelligent multi-agent orchestration platform for manufacturing order fulfillment. Five specialized AI agents collaborate in real-time through structured negotiation rounds to evaluate, negotiate, and reach consensus on complex manufacturing orders — all visible through a live interactive dashboard.
 
+Link to the Application: [ForgeAlign](https://cursor-hackathon-tawny.vercel.app/) 
+
 ![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)
 ![React](https://img.shields.io/badge/React-19-61DAFB?logo=react)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.7-3178C6?logo=typescript)
